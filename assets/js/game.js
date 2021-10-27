@@ -7,11 +7,6 @@ var enemyNames = ['Roborto', 'Amy Android', 'Robo Trumble'];
 var enemyHealth = 50;
 var enemyAttack = 12;
 
-console.log(enemyNames);
-console.log(enemyNames.length);
-console.log(enemyNames[0]);
-console.log(enemyNames[3]);
-
 // fight function (now with parameter for enemy's name)
 var fight = function(enemyName) {
   while (playerHealth > 0 && enemyHealth > 0) {
@@ -71,28 +66,19 @@ var fight = function(enemyName) {
 
 // function to start new game
 var startGame = function() {
-  for (var i = 0; i < enemyNames.length; i++) {
   // reset player stats
   playerHealth = 100;
   playerAttack = 10;
   playerMoney = 10;
 
-  //function to end entire game
-  var endGame = function() {
-    // if player is still alive, Player wins
-    if (playerHealth > 0) {
-    window.alert("Great job, you've survived the game! You have a score of " + playerMoney + ".");
-  }
-  else {
-    window.alert("You've lost your robot in battle.");
-  }
-}
 
 // fight each enemy-robot by looping over them and fighting them one at a time
 for (var i = 0; i < enemyNames.length; i++) {
   // if player is still alive, keep fighting
   if (playerHealth > 0) {
+
     // let player know what round they are in, remember that arrays start at 0 so it needs to have 1 added to it
+
     window.alert('Welcome to Robot Gladiators! Round ' + (i + 1));
 
     // pick new enemy to fight based on the index of the enemyNames array
@@ -109,7 +95,12 @@ for (var i = 0; i < enemyNames.length; i++) {
     
     // player is still alive and we arent at the last enemy in the array
     if (playerHealth > 0 && i < enemyNames.length -1) {
-      shop();
+
+      var storeConfirm = window.confirm("The fight is over, visit the store beore the next round?");
+
+      if (storeConfirm) {
+        shop();
+      }
     }
   }
   
@@ -118,8 +109,23 @@ for (var i = 0; i < enemyNames.length; i++) {
     window.alert('You have lost your robot in battle! Game Over!');
     break;
   }
-
 }
+
+endGame();
+};
+
+//function to end entire game
+var endGame = function() {
+  window.alert("The game has now ended. Let's see how you did!");
+
+  // if player is still alive, Player wins
+  if (playerHealth > 0) {
+  window.alert("Great job, you've survived the game! You have a score of " + playerMoney + ".");
+}
+else {
+  window.alert("You've lost your robot in battle.");
+}
+
   // ask player if they'd like to play again
   var playAgainConfirm = window.confirm("Would you like to play again?");
   if (playAgainConfirm) {
@@ -129,24 +135,21 @@ for (var i = 0; i < enemyNames.length; i++) {
   else {
     window.alert("Thank you for Playing Robot Gladiators! Come back soon!");
   }
-}
-  
-
-//after loop ends and the person is out run endgame function
-endGame();
 };
-
+  
+// go to shop between battles
 var shop = function() {
   // ask player what they'd like to do
   var shopOptionPrompt = window.prompt(
-    "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? please enter one: 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice.");
+    "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? please enter one: 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice."
+  );
 
-    //useing switch to cary out an action
-    switch (shopOptionPrompt) {
+  //useing switch to cary out an action
+  switch (shopOptionPrompt) {
 
-      // if they choose the refil option to refil health double up the cases so that its covers caps and lower case
-      case "REFILL":
-      case "refill":
+    // if they choose the refil option to refil health double up the cases so that its covers caps and lower case
+    case "REFILL":
+    case "refill":
         
       //adding functions so players cannot buy if they do not have the money aka nested functions
       if (playerMoney >= 7) { 
@@ -155,52 +158,49 @@ var shop = function() {
         //increase the player health and decrease money
         playerHealth = playerHealth + 20;
         playerMoney = playerMoney - 7;
-      }
+    }
 
       //the else statement if they do not have the funds
-      else {
+    else {
         window.alert("You do not have enough money!");
-      }
+    }
 
-        //end with a break so nothing else happens in this loop
-        break;
+      //end with a break so nothing else happens in this loop
+      break;
 
-        //If player chooses to upgrade
-        case "UPGRADE":
-        case "upgrade":
-          if (playerMoney >= 7) {
+      //If player chooses to upgrade
+      case "UPGRADE":
+      case "upgrade":
+        if (playerMoney >= 7) {
           window.alert("upgrading player's attac by 6 for $7 dollars.");
 
           //increase attack and decrease money
           playerAttack = playerAttack + 6;
           playerMoney = playerMoney - 7;
-          }
+      }
 
-          else{
-            window.alert("You do not have enough money!");
-          }
+      else{
+          window.alert("You do not have enough money!");
+      }
 
-          break;
+        break;
 
-          // If the player choses to leave
-          case "LEAVE":
-          case "leave":
-            window.alert("Leaving the store");
+      // If the player choses to leave
+      case "LEAVE":
+      case "leave":
+        window.alert("Leaving the store");
 
-            // do nothing so the function will end 
-            break;
+        // do nothing so the function will end 
+        break;
 
 
-            default:
-              window.alert("you did not pick a valid option. Try again.")
+      default:
+        window.alert("you did not pick a valid option. Try again.");
 
-              // call shop again
-              shop();
-              break;
+        // call shop again
+        shop();
+        break;
     }
-
-
-      //may or may not need this bracket VVVV
 };
 
-startGame ();
+startGame();
