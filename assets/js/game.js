@@ -5,11 +5,11 @@ var randomNumber = function (min, max) {
   return value;
 };
 
-var fightOrSkip = function() {
+var fightOrSkip = function () {
   //ask the player if they would like to fight or skip using this function
   var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? enter 'FIGHT' or 'SKIP' to choose.");
 
-  
+
 
   //conditonal recursive function call
   if (promptFight === "" || promptFight === null) {
@@ -75,6 +75,9 @@ var fight = function (enemy) {
         window.alert(enemy.name + ' still has ' + enemy.health + ' health left.');
       }
 
+      //player gets attacked first
+    } else {
+
       // remove players's health by subtracting the amount set in the enemy.attack variable
       var damage = randomNumber(enemy.attack - 3, enemy.attack);
 
@@ -98,7 +101,7 @@ var fight = function (enemy) {
 };
 
 //function to set player name
-var getPlayerName = function() {
+var getPlayerName = function () {
   var name = "";
 
   //****************************** */
@@ -128,7 +131,7 @@ var playerInfo = {
       this.health += 20;
       this.money -= 7;
     } else {
-      window.alert("You don't have enough money!");
+      window.alert(" You don't have enough money!");
     }
   },
   upgradeAttack: function () {
@@ -138,17 +141,17 @@ var playerInfo = {
 }
 
 var enemyInfo = [{
-    name: "roborto",
-    attack: randomNumber(10, 14),
-  },
-  {
-    name: "Amy Android",
-    attack: randomNumber(10, 14),
-  },
-  {
-    name: "Robo Trumble",
-    attack: randomNumber(10, 14),
-  }
+  name: "roborto",
+  attack: randomNumber(10, 14),
+},
+{
+  name: "Amy Android",
+  attack: randomNumber(10, 14),
+},
+{
+  name: "Robo Trumble",
+  attack: randomNumber(10, 14),
+}
 ];
 
 // function to start new game
@@ -206,11 +209,21 @@ var startGame = function () {
 var endGame = function () {
   window.alert("The game has now ended. Let's see how you did!");
 
-  // if player is still alive, Player wins
-  if (playerInfo.health > 0) {
-    window.alert("Great job, you've survived the game! You have a score of " + playerInfo.money + ".");
-  } else {
-    window.alert("You've lost your robot in battle.");
+  // check local storage for high score if none use 0
+  var highScore = localStorage.getItem("highscore");
+  if (highScore === null) {
+    highScore = 0;
+  }
+
+  // if player has more money than 0 then new highscore
+  if (playerInfo.money > highScore) {
+    localStorage.setItem("highscore", playerInfo.money);
+    localStorage.setItem("name", playerInfo.name);
+
+    alert(playerInfo.name + " now has the highscore of " + playerInfo.money + "!");
+  }
+  else {
+    alert(playerInfo.name + "did not beath the high score of " + highScore + ". Maybe next time");
   }
 
   // ask player if they'd like to play again
